@@ -2,22 +2,38 @@ $( document ).ready(function() {
 
   
 
-var weatherUpdate = function(cityName){
+var weatherUpdate = function(cityName, searched){
 
-  //$("#forcast .day").remove();
-  //$("#weather").remove();
   $("#searchError").html(""); 
+  $("#search datalist").html("");
+
 
   // First AJAX call gets the city name provided to the function
   $.ajax({url: `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`, success: function(result){
+    
+  // Checks if was sent from searchfield
+  if(searched === true){
+    // Checks if value was sent from form field before
+    if(searchedCities.includes($("#search input").val()) !== true){
+      searchedCities.push($("#search input").val());
+      localStorage.setItem("citysearch", JSON.stringify(searchedCities));
+    }
+    
+    localStorage.setItem("lastCitySearch", $("#search input").val());
+   }
+
+  //Sets search field presets
+  Array.from(searchedCities).forEach(check => {
+    $("#search datalist").append(`<option value="${check}"></option>`);
+  })
+
     cityId = result.id;
     // Second AJAX call uses the result.id data from the first to gather the information to display display the weather and pass to the third for the uv
     $.ajax({url: `https://api.openweathermap.org/data/2.5/forecast?id=${cityId}&APPID=${apiKey}&units=metric`, success: function(result){
-      console.log(result);
   
+      // Empties current day information
       $("#currentDay").html("");
-      // Current Day Block
-      
+      // Sets current day information
       $("#currentDay").append(`<div class="blockHeading"><h2>${result.city.name} ( ${getDate(0)} )</h2><img src="http://openweathermap.org/img/w/${result.list[0].weather[0].icon}.png" alt="${result.list[0].weather[0].description}" width='50' height='50'>`);
       $("#currentDay").append(`<p class="humidity">Temperature: ${result.list[0].main.temp} °C</p>`);
       $("#currentDay").append(`<p class="humidity"> Humidity: ${result.list[0].main.humidity} %</p>`);
@@ -45,8 +61,7 @@ var weatherUpdate = function(cityName){
       }
     }});
   },error: function (xhr, ajaxOptions, thrownError) {
-    //alert(xhr.status);
-    //alert(thrownError);
+    //Error handling ajax class from 404's
     if ($("#search input").val() === ""){
       $("#searchError").html("*Requires a city name."); 
     }else{
@@ -56,19 +71,20 @@ var weatherUpdate = function(cityName){
 });
   }
   
-    weatherUpdate("Toronto");
-  
-    $("#presetCities div").on( "click", function() {
-      weatherUpdate($(this).html().toString());
-    });
-  
-    $("#search img").on( "click", function() {
-     
-      weatherUpdate($("#search input").val());
-    });
+  if( localStorage.getItem("lastCitySearch")){
+    weatherUpdate( localStorage.getItem("lastCitySearch"), false);
+  }else{
+    weatherUpdate("Toronto", false);
+  }
+
+  $("#presetCities div").on( "click", function() {
+    weatherUpdate($(this).html().toString(), false);
+  });
+
+  $("#search img").on( "click", function() {
+    weatherUpdate($("#search input").val(), true);     
+  });
 
   
 
   });
-
-
