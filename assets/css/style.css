@@ -115,6 +115,13 @@ h1 {
   cursor: pointer;
 }
 
+#searchError{
+  height:18px;
+  margin-left:5px;
+  color:red;
+
+}
+
 
 @media only screen and (min-width: 768px) {
   #container{

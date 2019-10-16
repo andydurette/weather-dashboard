@@ -6,7 +6,7 @@ var weatherUpdate = function(cityName){
 
   //$("#forcast .day").remove();
   //$("#weather").remove();
-  
+  $("#searchError").html(""); 
 
   // First AJAX call gets the city name provided to the function
   $.ajax({url: `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`, success: function(result){
@@ -44,7 +44,16 @@ var weatherUpdate = function(cityName){
         $("#forcast .days").append(forcastBlock(i));
       }
     }});
-  }});
+  },error: function (xhr, ajaxOptions, thrownError) {
+    //alert(xhr.status);
+    //alert(thrownError);
+    if ($("#search input").val() === ""){
+      $("#searchError").html("*Requires a city name."); 
+    }else{
+      $("#searchError").html("*City not found.");
+    }
+  }
+});
   }
   
     weatherUpdate("Toronto");
@@ -53,6 +62,10 @@ var weatherUpdate = function(cityName){
       weatherUpdate($(this).html().toString());
     });
   
+    $("#search img").on( "click", function() {
+     
+      weatherUpdate($("#search input").val());
+    });
 
   
 
