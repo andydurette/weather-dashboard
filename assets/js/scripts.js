@@ -77,7 +77,7 @@ var weatherUpdate = function(cityName, searched){
     weatherUpdate("Toronto", false);
   }
 
-  $("#presetCities div").on( "click", function() {
+  $("#presetCities button").on( "click", function() {
     weatherUpdate($(this).html().toString(), false);
   });
 

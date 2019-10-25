@@ -109,10 +109,11 @@ h1 {
   border-radius:5px;
 }
 
-#presetCities div{
+#presetCities button{
   border: 1px solid #dfdfdf;
   padding: 20px;
   cursor: pointer;
+  background-color: white;
 }
 
 #searchError{
