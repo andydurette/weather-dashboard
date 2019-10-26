@@ -81,7 +81,7 @@ var weatherUpdate = function(cityName, searched){
     weatherUpdate($(this).html().toString(), false);
   });
 
-  $("#search img").on( "click", function() {
+  $("#search button").on( "click", function() {
     weatherUpdate($("#search input").val(), true);     
   });
 
