@@ -121,7 +121,10 @@ h1 {
   height:18px;
   margin-left:5px;
   color:red;
+}
 
+#presetCities button.wait{
+  cursor:wait;
 }
 
 

@@ -1,11 +1,14 @@
 $( document ).ready(function() {
 
-  
+let apiCalling = false;
 
-var weatherUpdate = function(cityName, searched){
-
+let weatherUpdate = function(cityName, searched){
+  apiCalling = true;
   $("#searchError").html(""); 
   $("#search datalist").html("");
+  // Disables app from being run so iterative requests won't function disabling any bugs from occuring
+  $('button').addClass('wait');
+  $('button').attr("disabled", true);
 
 
   // First AJAX call gets the city name provided to the function
@@ -35,13 +38,22 @@ var weatherUpdate = function(cityName, searched){
       $("#currentDay").html("");
       // Sets current day information
       $("#currentDay").append(`<div class="blockHeading"><h2>${result.city.name} ( ${getDate(0)} )</h2><img src="https://openweathermap.org/img/w/${result.list[0].weather[0].icon}.png" alt="${result.list[0].weather[0].description}" width='50' height='50'>`);
-      $("#currentDay").append(`<p class="humidity">Temperature: ${result.list[0].main.temp} °C</p>`);
+      $("#currentDay").append(`<p class="tempature">Temperature: ${result.list[0].main.temp} °C</p>`);
       $("#currentDay").append(`<p class="humidity"> Humidity: ${result.list[0].main.humidity} %</p>`);
-      $("#currentDay").append(`<p class="uv">Wind Speed:  ${mph(result.list[0].wind.speed)} MPH</p>`);
+      $("#currentDay").append(`<p class="wind_speed">Wind Speed:  ${mph(result.list[0].wind.speed)} MPH</p>`);
       // Third AJAX call uses the co-ordinate data from the second to call the uv data
       $.ajax({url: "https://api.openweathermap.org/data/2.5/uvi?appid=428bbab3989b31eb5f6dd40e0559cbeb&lat=" + result.city.coord.lat + "&lon=" + result.city.coord.lon, success: function(result){
         $("#currentDay").append(`<p class="uv">UV Index: <span>${result.value}</span></p>` );
-      }});
+        // Allows function to run again now that the app has finished running
+          $('button').removeClass('wait');
+          $('button').attr("disabled", false);
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) { 
+        $("#currentDay").append(`<p class="uv">UV Index: <span>Sorry Data not available at this time</span></p>` );
+        // Allows function to run again now that the app has finished running
+        $('button').removeClass('wait');
+        $('button').attr("disabled", false);
+      } });
   
       // 5 Day Forcast
       // Clear forcast data
@@ -60,7 +72,7 @@ var weatherUpdate = function(cityName, searched){
         $("#forcast .days").append(forcastBlock(i));
       }
     }});
-  },error: function (xhr, ajaxOptions, thrownError) {
+  },error: function () {
     //Error handling ajax class from 404's
     if ($("#search input").val() === ""){
       $("#searchError").html("*Requires a city name."); 
@@ -78,11 +90,15 @@ var weatherUpdate = function(cityName, searched){
   }
 
   $("#presetCities button").on( "click", function() {
-    weatherUpdate($(this).html().toString(), false);
+    if( apiCalling = true ){
+      weatherUpdate($(this).html().toString(), false)
+    };
   });
 
   $("#search button").on( "click", function() {
-    weatherUpdate($("#search input").val(), true);     
+    if( apiCalling = false ){
+      weatherUpdate($("#search input").val(), true);
+    };
   });
 
   
