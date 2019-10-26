@@ -81,16 +81,17 @@ h1 {
   width: 60%;
 }
 
-#search div{
+#search button{
   background-color:#007bff;
   cursor:pointer;
   position:relative;
   height: 40px;
   width: 40px;
   border-radius:5px;
+  border: 0px solid transparent;
 }
 
-#search div img{
+#search button img{
   position:absolute;
   width:50%;
   height:50%;
