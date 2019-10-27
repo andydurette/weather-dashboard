@@ -123,8 +123,8 @@ h1 {
   color:red;
 }
 
-#presetCities button.wait{
-  cursor:wait;
+#presetCities button.wait, #search button.wait{
+  cursor: progress;
 }
 
 
