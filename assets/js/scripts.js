@@ -21,7 +21,6 @@ let weatherUpdate = function(cityName, searched){
       searchedCities.push($("#search input").val());
       localStorage.setItem("citysearch", JSON.stringify(searchedCities));
     }
-
     localStorage.setItem("lastCitySearch", $("#search input").val());
    }
 
