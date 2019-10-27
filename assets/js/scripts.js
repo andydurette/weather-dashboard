@@ -39,7 +39,7 @@ var weatherUpdate = function(cityName, searched){
       $("#currentDay").append(`<p class="humidity"> Humidity: ${result.list[0].main.humidity} %</p>`);
       $("#currentDay").append(`<p class="wind_speed">Wind Speed:  ${mph(result.list[0].wind.speed)} MPH</p>`);
       // Third AJAX call uses the co-ordinate data from the second to call the uv data
-    $.ajax({url: "https://api.openweathermap.org/data/2.5/uvi?appid=428bbab3989b31eb5f6dd40e0559cbeb&lat=" + result.city.coord.lat + "&lon=" + result.city.coord.lon, 
+    $.ajax({url: `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=` + result.city.coord.lat + "&lon=" + result.city.coord.lon, 
     success: function(result){
         $("#currentDay").append(`<p class="uv">UV Index: <span>${result.value}</span></p>` );
         // Call ends reenamble api calls
