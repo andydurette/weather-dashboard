@@ -70,7 +70,7 @@ var weatherUpdate = function(cityName, searched){
         let forcastBlock = function(i){
           return('<div>' +
           '<p class="date">' + getDate(i) + '</p>' +  
-          `<img src="https://openweathermap.org/img/w/${result.list[i].weather[0].icon}.png" alt="${result.list[i].weather[0].description}" "width='50' height='50'>` +
+          `<img src="https://openweathermap.org/img/w/${result.list[i].weather[0].icon}.png" alt="${result.list[i].weather[0].description}" width='50' height='50'>` +
           `<p class="temperature">Temp: ${result.list[i].main.temp}&nbsp;°C</p>` +
           `<p class="humidity">Humidity: ${result.list[i].main.humidity}&nbsp;%"</p>` +
           '</div>');
